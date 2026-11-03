@@ -250,10 +250,34 @@
         }
 
         .alias-value {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            width: auto;
+            padding: 5px;
+            margin: 0 auto;
+            background: transparent;
+            border: none;
             color: var(--gold-light);
             font-size: 19px;
             font-weight: bold;
-            word-break: break-word;
+            cursor: pointer;
+        }
+
+            .alias-value:hover {
+                color: var(--gold);
+            }
+
+        .copy-icon {
+            font-size: 17px;
+        }
+
+        .alias-hint {
+            display: block;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
         }
 
         .message {
@@ -418,9 +442,14 @@
                 <span class="alias-label">
                     Alias para realizar la transferencia
                 </span>
-                <div class="alias-value" id="aliasValue">
+
+                <button type="button"
+                        class="alias-value"
+                        id="aliasValue"
+                        aria-label="Copiar alias al portapapeles">
                     a.g.aguirre
-                </div>
+                    <span class="copy-icon">📋</span>
+                </button>
             </div>
 
             <!-- BOTÓN AUXILIAR: SOLO APARECE SI FALLA LA COPIA AUTOMÁTICA -->
