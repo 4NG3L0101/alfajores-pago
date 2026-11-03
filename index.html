@@ -44,8 +44,8 @@
         }
 
         .brand-image {
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             object-fit: cover;
             display: block;
             margin: 0 auto 18px;
@@ -68,6 +68,56 @@
             color: var(--gold-light);
             margin: 28px 0 16px;
         }
+
+        /* =====================================
+           NAVEGACIÓN ENTRE PANTALLAS
+        ===================================== */
+
+        .screen {
+            display: none;
+            width: 100%;
+            animation: fadeIn .25s ease;
+        }
+
+            .screen.active {
+                display: block;
+            }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: auto;
+            padding: 9px 13px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+            .back-button:hover {
+                background: var(--surface-hover);
+                border-color: var(--gold);
+            }
+
+        /* =====================================
+           PRODUCTOS
+        ===================================== */
 
         .products {
             display: grid;
@@ -137,6 +187,10 @@
             margin-top: 5px;
         }
 
+        /* =====================================
+           CANTIDAD PERSONALIZADA
+        ===================================== */
+
         .custom-quantity {
             display: none;
             margin-top: 14px;
@@ -171,6 +225,10 @@
             input[type="number"]:focus {
                 border-color: var(--gold);
             }
+
+        /* =====================================
+           RESUMEN
+        ===================================== */
 
         .summary {
             margin-top: 20px;
@@ -209,6 +267,10 @@
             font-size: 26px;
         }
 
+        /* =====================================
+           BOTONES
+        ===================================== */
+
         button {
             width: 100%;
             border: none;
@@ -235,16 +297,9 @@
                 background: var(--gold-light);
             }
 
-        .payment-section {
-            display: none;
-            margin-top: 30px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-        }
-
-            .payment-section.visible {
-                display: block;
-            }
+        /* =====================================
+           ALIAS
+        ===================================== */
 
         .alias-box {
             padding: 20px;
@@ -252,7 +307,7 @@
             background: var(--surface);
             border: 1px solid var(--border);
             text-align: center;
-            margin-bottom: 18px;
+            margin-top: 18px;
         }
 
         .alias-value {
@@ -262,6 +317,10 @@
             overflow-wrap: anywhere;
             margin: 13px 0;
         }
+
+        /* =====================================
+           MEDIOS DE PAGO
+        ===================================== */
 
         .payment-total {
             font-size: 27px;
@@ -288,6 +347,10 @@
                 background: #49382b;
                 border-color: var(--gold);
             }
+
+        /* =====================================
+           TEXTOS AUXILIARES
+        ===================================== */
 
         .note {
             font-size: 12px;
@@ -330,31 +393,43 @@
                 font-size: 17px;
             }
         }
-    </style>
 
+        @media (prefers-reduced-motion: reduce) {
+            .screen {
+                animation: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
     <main class="container">
 
         <header>
-            <!-- Reemplazar por la imagen cuadrada de tu marca -->
             <img class="brand-image"
                  src="img/marca.png"
                  alt="Marca">
 
             <h1>Alfajores artesanales</h1>
-            <p class="subtitle">Elegí tu compra y disfrutá algo diferente.</p>
+            <p class="subtitle">
+                Elegí tu compra y disfrutá algo diferente.
+            </p>
         </header>
 
-        <section>
+        <!-- =====================================
+             PANTALLA 1: CANTIDAD A COMPRAR
+        ====================================== -->
+
+        <section id="screen1" class="screen active">
+
             <h2>¿Qué cantidad querés comprar?</h2>
 
             <div class="products">
 
                 <label class="product">
                     <input type="radio" name="purchase" value="single">
-                    <img src="img/unidad.png" alt="Un alfajor">
+                    <img src="img/unidad.jpg" alt="Un alfajor">
                     <span class="product-name">1 unidad</span>
                     <span class="product-price">$3.000</span>
                     <span class="product-description">Precio individual</span>
@@ -362,34 +437,43 @@
 
                 <label class="product">
                     <input type="radio" name="purchase" value="pack6">
-                    <img src="img/pack6.png" alt="Pack de 6 alfajores">
+                    <img src="img/pack6.jpg" alt="Pack de 6 alfajores">
                     <span class="product-name">Pack x 6</span>
                     <span class="product-price">$16.500</span>
-                    <span class="product-description">Presentación de 6 unidades</span>
+                    <span class="product-description">
+                        Presentación de 6 unidades
+                    </span>
                 </label>
 
                 <label class="product">
                     <input type="radio" name="purchase" value="pack12">
-                    <img src="img/pack12.png" alt="Pack de 12 alfajores">
+                    <img src="img/pack12.jpg" alt="Pack de 12 alfajores">
                     <span class="product-name">Pack x 12</span>
                     <span class="product-price">$32.500</span>
-                    <span class="product-description">Presentación de 12 unidades</span>
+                    <span class="product-description">
+                        Presentación de 12 unidades
+                    </span>
                 </label>
 
                 <label class="product">
                     <input type="radio" name="purchase" value="custom">
-                    <img src="img/otra-cantidad.png" alt="Alfajores artesanales">
+                    <img src="img/otra-cantidad.jpg"
+                         alt="Alfajores artesanales">
                     <span class="product-name">Otra cantidad</span>
                     <span class="product-price">Precio variable</span>
-                    <span class="product-description">Elegí cuántos necesitás</span>
+                    <span class="product-description">
+                        Elegí cuántos necesitás
+                    </span>
                 </label>
 
             </div>
 
             <div id="customQuantity" class="custom-quantity">
+
                 <label class="input-label" for="quantity">
                     ¿Cuántos alfajores querés?
                 </label>
+
                 <input type="number"
                        id="quantity"
                        min="2"
@@ -397,13 +481,16 @@
                        step="1"
                        placeholder="Ingresá la cantidad"
                        inputmode="numeric">
+
                 <p class="note">
                     De 2 a 12 unidades: $2.800 c/u.
                     Desde 13 unidades: $2.600 c/u.
                 </p>
+
             </div>
 
             <div class="summary">
+
                 <div class="summary-line">
                     <span>Cantidad</span>
                     <strong id="summaryQuantity">Sin seleccionar</strong>
@@ -418,340 +505,490 @@
                     <span>Total a pagar</span>
                     <span class="total-price" id="totalPrice">$0</span>
                 </div>
+
             </div>
 
             <button id="continueButton"
                     class="primary-button"
                     disabled>
-                Proseguir compra
+                Continuar
             </button>
+
         </section>
 
-        <!-- Se muestra después de confirmar y autorizar la copia -->
-        <section id="paymentSection" class="payment-section">
+
+        <!-- =====================================
+             PANTALLA 2: FINALIZAR COMPRA
+        ====================================== -->
+
+        <section id="screen2" class="screen">
+
+            <button class="back-button" id="backTo1">
+                ← Volver
+            </button>
 
             <h2>Finalizar compra</h2>
 
+            <div class="summary">
+
+                <div class="summary-line">
+                    <span>Cantidad</span>
+                    <strong id="paymentQuantity">—</strong>
+                </div>
+
+                <div class="summary-line">
+                    <span>Importe de tu compra</span>
+                </div>
+
+                <div class="payment-total" id="paymentTotal">
+                    $0
+                </div>
+
+            </div>
+
             <div class="alias-box">
+
                 <strong>Alias para realizar la transferencia</strong>
-                <div class="alias-value" id="aliasText">TU.ALIAS.AQUI</div>
+
+                <div class="alias-value" id="aliasText">
+                    TU.ALIAS.AQUI
+                </div>
 
                 <p class="note">
-                    Al continuar, autorizás a copiar el alias al portapapeles.
-                    Luego podrás elegir tu billetera o banco.
+                    Al continuar, autorizás a copiar el alias
+                    al portapapeles. Luego podrás elegir tu
+                    billetera o banco.
                 </p>
 
                 <button id="copyAliasButton" class="primary-button">
                     Autorizar y copiar alias
                 </button>
+
+                <p id="copyStatus" class="note hidden" role="status">
+                    Alias copiado correctamente.
+                </p>
+
             </div>
 
-            <div id="wallets" class="hidden">
-                <h2>Elegí dónde realizar el pago</h2>
+            <button id="continueToWallets"
+                    class="primary-button"
+                    disabled>
+                Continuar
+            </button>
 
-                <div class="summary">
-                    <div class="summary-line">
-                        <span>Importe de tu compra</span>
-                    </div>
-                    <div class="payment-total" id="paymentTotal">$0</div>
+        </section>
+
+
+        <!-- =====================================
+             PANTALLA 3: ELEGIR CÓMO PAGAR
+        ====================================== -->
+
+        <section id="screen3" class="screen">
+
+            <button class="back-button" id="backTo2">
+                ← Volver
+            </button>
+
+            <h2>Elegí dónde realizar el pago</h2>
+
+            <div class="summary">
+
+                <div class="summary-line">
+                    <span>Importe de tu compra</span>
                 </div>
 
-                <div id="walletLinks"></div>
+                <div class="payment-total" id="walletPaymentTotal">
+                    $0
+                </div>
 
-                <p class="note">
-                    Se abrirá la aplicación o el sitio de la entidad seleccionada.
-                    Verificá el alias y el importe antes de confirmar la transferencia.
-                    La transferencia no se confirma automáticamente desde esta página.
-                </p>
             </div>
+
+            <div id="walletLinks"></div>
+
+            <p class="note">
+                Se abrirá la aplicación o el sitio de la entidad
+                seleccionada. Verificá el alias y el importe antes
+                de confirmar la transferencia.
+
+                La transferencia no se confirma automáticamente
+                desde esta página.
+            </p>
+
         </section>
 
     </main>
 
+
     <script>
-        // =====================================
-        // CONFIGURACIÓN
-        // =====================================
 
-        const ALIAS = "a.g.aguirre";
+// =====================================
+// CONFIGURACIÓN
+// =====================================
 
-        // Enlaces y esquemas suministrados para probar.
-        // Deben verificarse en dispositivos reales.
-        const wallets = [
-            {
-                name: "Mercado Pago",
-                deepLink: "https://852u.adj.st/home?adjust_t=mqo65e0&adjust_deeplink=mercadopago%3A%2F%2Fhome&adjust_label=mp-home-footer-web&engagement_type=fallback_click#from=home_mp_desktop&oc.component=footer&oc.page_id=hs_home_mp_desktop",
-                website: "https://www.mercadopago.com.ar/"
-            },
-            {
-                name: "Santander",
-                deepLink: "https://mbankingst.page.link/vuPm",
-                website: "https://www.santander.com.ar/"
-            },
-            {
-                name: "Galicia",
-                deepLink: "https://hacetegalicia.onelink.me/64zW/w1t3wupc",
-                website: "https://www.galicia.ar/"
-            },
-            {
-                name: "Naranja X",
-                scheme: "nx://home",
-                androidPackage: "com.naranjax",
-                website: "https://naranjax.com/",
-                deepLink: "https://naranjax.sng.link/Ektok/11b2?_dl=nx%3A%2F%2Fhome&_smtype=3&pcn=home&pcrn=Sticky"
-            }
-        ];
+const ALIAS = "a.g.aguirre";
 
-        // =====================================
-        // ELEMENTOS
-        // =====================================
+const wallets = [
+    {
+        name: "Mercado Pago",
+        deepLink: "https://852u.adj.st/home?adjust_t=mqo65e0&adjust_deeplink=mercadopago%3A%2F%2Fhome&adjust_label=mp-home-footer-web&engagement_type=fallback_click#from=home_mp_desktop&oc.component=footer&oc.page_id=hs_home_mp_desktop",
+        website: "https://www.mercadopago.com.ar/"
+    },
+    {
+        name: "Santander",
+        deepLink: "https://mbankingst.page.link/vuPm",
+        website: "https://www.santander.com.ar/"
+    },
+    {
+        name: "Galicia",
+        deepLink: "https://hacetegalicia.onelink.me/64zW/w1t3wupc",
+        website: "https://www.galicia.ar/"
+    },
+    {
+        name: "Naranja X",
+        deepLink: "https://naranjax.sng.link/Ektok/11b2?_dl=nx%3A%2F%2Fhome&_smtype=3&pcn=home&pcrn=Sticky",
+        website: "https://naranjax.com/"
+    }
+];
 
-        const options = document.querySelectorAll(
-            'input[name="purchase"]'
+
+// =====================================
+// ELEMENTOS
+// =====================================
+
+const screens = {
+    1: document.getElementById("screen1"),
+    2: document.getElementById("screen2"),
+    3: document.getElementById("screen3")
+};
+
+const options = document.querySelectorAll(
+    'input[name="purchase"]'
+);
+
+const quantityInput = document.getElementById("quantity");
+const customQuantity = document.getElementById("customQuantity");
+
+const summaryQuantity = document.getElementById("summaryQuantity");
+const unitPrice = document.getElementById("unitPrice");
+const totalPrice = document.getElementById("totalPrice");
+
+const continueButton = document.getElementById("continueButton");
+
+const paymentQuantity = document.getElementById("paymentQuantity");
+const paymentTotal = document.getElementById("paymentTotal");
+const walletPaymentTotal = document.getElementById("walletPaymentTotal");
+
+const aliasText = document.getElementById("aliasText");
+const copyAliasButton = document.getElementById("copyAliasButton");
+const copyStatus = document.getElementById("copyStatus");
+
+const continueToWallets = document.getElementById("continueToWallets");
+const walletLinks = document.getElementById("walletLinks");
+
+
+// =====================================
+// ESTADO DE LA COMPRA
+// =====================================
+
+let selectedQuantity = 0;
+let selectedUnitPrice = 0;
+let finalTotal = 0;
+
+let aliasCopied = false;
+
+const money = value =>
+    new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "ARS",
+        maximumFractionDigits: 0
+    }).format(value);
+
+
+// =====================================
+// NAVEGACIÓN
+// =====================================
+
+function showScreen(number) {
+
+    Object.entries(screens).forEach(([key, screen]) => {
+        screen.classList.toggle(
+            "active",
+            Number(key) === number
+        );
+    });
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+// =====================================
+// CÁLCULO DE COMPRA
+// =====================================
+
+function getSelectedOption() {
+    return document.querySelector(
+        'input[name="purchase"]:checked'
+    )?.value;
+}
+
+
+function calculatePurchase() {
+
+    const option = getSelectedOption();
+
+    selectedQuantity = 0;
+    selectedUnitPrice = 0;
+    finalTotal = 0;
+
+    customQuantity.classList.toggle(
+        "visible",
+        option === "custom"
+    );
+
+    if (option === "single") {
+
+        selectedQuantity = 1;
+        selectedUnitPrice = 3000;
+
+    }
+
+    else if (option === "pack6") {
+
+        selectedQuantity = 6;
+        selectedUnitPrice = 16500 / 6;
+
+    }
+
+    else if (option === "pack12") {
+
+        selectedQuantity = 12;
+        selectedUnitPrice = 32500 / 12;
+
+    }
+
+    else if (option === "custom") {
+
+        const quantity = Number(quantityInput.value);
+
+        if (
+            !Number.isInteger(quantity) ||
+            quantity < 2 ||
+            quantity > 999
+        ) {
+            updateSummary(false);
+            return;
+        }
+
+        selectedQuantity = quantity;
+
+        selectedUnitPrice =
+            quantity >= 13 ? 2600 : 2800;
+
+    }
+
+    else {
+
+        updateSummary(false);
+        return;
+
+    }
+
+    finalTotal = Math.round(
+        selectedQuantity * selectedUnitPrice
+    );
+
+    // Precios cerrados de los packs.
+    if (option === "pack6") finalTotal = 16500;
+    if (option === "pack12") finalTotal = 32500;
+
+    updateSummary(true);
+}
+
+
+// =====================================
+// ACTUALIZAR RESUMEN
+// =====================================
+
+function updateSummary(valid) {
+
+    if (!valid) {
+
+        summaryQuantity.textContent = "Sin seleccionar";
+        unitPrice.textContent = "—";
+        totalPrice.textContent = "$0";
+
+        continueButton.disabled = true;
+
+        return;
+    }
+
+    summaryQuantity.textContent =
+        selectedQuantity + " alfajor(es)";
+
+    unitPrice.textContent =
+        money(selectedUnitPrice);
+
+    totalPrice.textContent =
+        money(finalTotal);
+
+    continueButton.disabled = false;
+}
+
+
+// =====================================
+// EVENTOS DE SELECCIÓN
+// =====================================
+
+options.forEach(option => {
+    option.addEventListener("change", calculatePurchase);
+});
+
+quantityInput.addEventListener("input", calculatePurchase);
+
+
+// =====================================
+// PANTALLA 1 → PANTALLA 2
+// =====================================
+
+continueButton.addEventListener("click", () => {
+
+    calculatePurchase();
+
+    if (!selectedQuantity || !finalTotal) return;
+
+    // Actualizar información de pago.
+    aliasText.textContent = ALIAS;
+
+    paymentQuantity.textContent =
+        selectedQuantity + " alfajor(es)";
+
+    paymentTotal.textContent =
+        money(finalTotal);
+
+    walletPaymentTotal.textContent =
+        money(finalTotal);
+
+    // Exigir autorización nuevamente para esta compra.
+    aliasCopied = false;
+
+    copyAliasButton.disabled = false;
+    copyAliasButton.textContent = "Autorizar y copiar alias";
+
+    continueToWallets.disabled = true;
+
+    copyStatus.classList.add("hidden");
+
+    showScreen(2);
+
+});
+
+
+// =====================================
+// VOLVER A PANTALLA 1
+// =====================================
+
+document.getElementById("backTo1").addEventListener("click", () => {
+    showScreen(1);
+});
+
+
+// =====================================
+// COPIAR ALIAS
+// =====================================
+
+copyAliasButton.addEventListener("click", async () => {
+
+    if (ALIAS === "TU.ALIAS.AQUI") {
+
+        alert("Primero configurá tu alias en el código.");
+        return;
+
+    }
+
+    try {
+
+        await navigator.clipboard.writeText(ALIAS);
+
+        aliasCopied = true;
+
+        copyAliasButton.textContent = "¡Alias copiado!";
+        copyAliasButton.disabled = true;
+
+        continueToWallets.disabled = false;
+
+        copyStatus.classList.remove("hidden");
+
+    }
+
+    catch (error) {
+
+        aliasCopied = false;
+
+        copyAliasButton.textContent =
+            "No se pudo copiar. Intentar nuevamente";
+
+        continueToWallets.disabled = true;
+
+        alert(
+            "El navegador no permitió copiar el alias. " +
+            "Verificá que estés usando HTTPS y volvé a intentarlo."
         );
 
-        const quantityInput = document.getElementById("quantity");
-        const customQuantity = document.getElementById("customQuantity");
+    }
 
-        const summaryQuantity = document.getElementById("summaryQuantity");
-        const unitPrice = document.getElementById("unitPrice");
-        const totalPrice = document.getElementById("totalPrice");
+});
 
-        const continueButton = document.getElementById("continueButton");
-        const paymentSection = document.getElementById("paymentSection");
-        const copyAliasButton = document.getElementById("copyAliasButton");
 
-        const aliasText = document.getElementById("aliasText");
-        const walletsContainer = document.getElementById("wallets");
-        const paymentTotal = document.getElementById("paymentTotal");
-        const walletLinks = document.getElementById("walletLinks");
+// =====================================
+// PANTALLA 2 → PANTALLA 3
+// =====================================
 
-        // =====================================
-        // ESTADO DE LA COMPRA
-        // =====================================
+continueToWallets.addEventListener("click", () => {
 
-        let selectedQuantity = 0;
-        let selectedUnitPrice = 0;
-        let finalTotal = 0;
+    if (!aliasCopied) return;
 
-        const money = value =>
-            new Intl.NumberFormat("es-AR", {
-                style: "currency",
-                currency: "ARS",
-                maximumFractionDigits: 0
-            }).format(value);
+    createWalletButtons();
 
-        function getSelectedOption() {
-            return document.querySelector(
-                'input[name="purchase"]:checked'
-            )?.value;
-        }
+    showScreen(3);
 
-        function calculatePurchase() {
-            const option = getSelectedOption();
+});
 
-            selectedQuantity = 0;
-            selectedUnitPrice = 0;
-            finalTotal = 0;
 
-            customQuantity.classList.toggle(
-                "visible",
-                option === "custom"
-            );
+// =====================================
+// VOLVER A PANTALLA 2
+// =====================================
 
-            if (option === "single") {
-                selectedQuantity = 1;
-                selectedUnitPrice = 3000;
-            }
+document.getElementById("backTo2").addEventListener("click", () => {
+    showScreen(2);
+});
 
-            else if (option === "pack6") {
-                selectedQuantity = 6;
-                selectedUnitPrice = 16500 / 6;
-            }
 
-            else if (option === "pack12") {
-                selectedQuantity = 12;
-                selectedUnitPrice = 32500 / 12;
-            }
+// =====================================
+// BOTONES DE BANCOS Y BILLETERAS
+// =====================================
 
-            else if (option === "custom") {
-                const quantity = Number(quantityInput.value);
+function createWalletButtons() {
 
-                if (
-                    !Number.isInteger(quantity) ||
-                    quantity < 2 ||
-                    quantity > 999
-                ) {
-                    updateSummary(false);
-                    return;
-                }
+    walletLinks.innerHTML = "";
 
-                selectedQuantity = quantity;
+    wallets.forEach(wallet => {
 
-                selectedUnitPrice =
-                    quantity >= 13 ? 2600 : 2800;
-            }
+        const link = document.createElement("a");
 
-            else {
-                updateSummary(false);
-                return;
-            }
+        link.className = "wallet-button";
+        link.textContent = wallet.name;
+        link.href = wallet.deepLink || wallet.website;
 
-            finalTotal = Math.round(
-                selectedQuantity * selectedUnitPrice
-            );
+        walletLinks.appendChild(link);
 
-            // Los packs tienen precios cerrados.
-            if (option === "pack6") finalTotal = 16500;
-            if (option === "pack12") finalTotal = 32500;
+    });
 
-            updateSummary(true);
-        }
-
-        function updateSummary(valid) {
-            if (!valid) {
-                summaryQuantity.textContent = "Sin seleccionar";
-                unitPrice.textContent = "—";
-                totalPrice.textContent = "$0";
-                continueButton.disabled = true;
-                return;
-            }
-
-            summaryQuantity.textContent =
-                selectedQuantity + " alfajor(es)";
-
-            unitPrice.textContent =
-                money(selectedUnitPrice);
-
-            totalPrice.textContent =
-                money(finalTotal);
-
-            continueButton.disabled = false;
-
-            // Si cambia la compra, se vuelve a exigir autorización.
-            paymentSection.classList.remove("visible");
-            walletsContainer.classList.add("hidden");
-            copyAliasButton.disabled = false;
-            copyAliasButton.textContent =
-                "Autorizar y copiar alias";
-        }
-
-        // =====================================
-        // EVENTOS DE SELECCIÓN
-        // =====================================
-
-        options.forEach(option => {
-            option.addEventListener("change", calculatePurchase);
-        });
-
-        quantityInput.addEventListener("input", calculatePurchase);
-
-        // =====================================
-        // PROSEGUIR COMPRA
-        // =====================================
-
-        continueButton.addEventListener("click", () => {
-            calculatePurchase();
-
-            if (!selectedQuantity || !finalTotal) return;
-
-            aliasText.textContent = ALIAS;
-            paymentTotal.textContent = money(finalTotal);
-
-            paymentSection.classList.add("visible");
-            walletsContainer.classList.add("hidden");
-            copyAliasButton.disabled = false;
-            copyAliasButton.textContent =
-                "Autorizar y copiar alias";
-
-            paymentSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-        });
-
-        // =====================================
-        // COPIAR ALIAS CON AUTORIZACIÓN
-        // =====================================
-
-        copyAliasButton.addEventListener("click", async () => {
-            if (ALIAS === "TU.ALIAS.AQUI") {
-                alert("Primero configurá tu alias en el código.");
-                return;
-            }
-
-            try {
-                await navigator.clipboard.writeText(ALIAS);
-
-                copyAliasButton.textContent = "¡Alias copiado!";
-                walletsContainer.classList.remove("hidden");
-
-                createWalletButtons();
-
-            } catch (error) {
-                // Si el navegador no permite copiar, no se afirma
-                // que el alias fue copiado.
-                copyAliasButton.textContent =
-                    "No se pudo copiar. Intentar nuevamente";
-
-                alert(
-                    "El navegador no permitió copiar el alias. " +
-                    "Verificá que estés usando HTTPS y volvé a intentarlo."
-                );
-            }
-        });
-
-        // =====================================
-        // BOTONES DE PAGO
-        // =====================================
-
-        function createWalletButtons() {
-            walletLinks.innerHTML = "";
-
-            const isAndroid =
-                /Android/i.test(navigator.userAgent);
-
-            const isIOS =
-                /iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-            wallets.forEach(wallet => {
-                const link = document.createElement("a");
-
-                link.className = "wallet-button";
-                link.textContent = wallet.name;
-
-                // Naranja X: utiliza el enlace oficial de Singular.
-                if (wallet.deepLink) {
-                    link.href = wallet.deepLink;
-                }
-
-                // Android: intenta abrir la aplicación instalada.
-                else if (isAndroid) {
-                    link.href =
-                        "intent://#Intent;" +
-                        "scheme=" + wallet.scheme.replace("://", "") + ";" +
-                        "package=" + wallet.androidPackage + ";" +
-                        "S.browser_fallback_url=" +
-                        encodeURIComponent(wallet.website) +
-                        ";end";
-                }
-
-                // iPhone / iPad.
-                else if (isIOS) {
-                    link.href = wallet.scheme;
-                }
-
-                // Computadoras y otros dispositivos.
-                else {
-                    link.href = wallet.website;
-                    link.target = "_blank";
-                    link.rel = "noopener noreferrer";
-                }
-
-                walletLinks.appendChild(link);
-            });
-        }
+}
 
     </script>
+
 </body>
 </html>
