@@ -635,6 +635,23 @@
       }
     }
 
+    // COPIAR ALIAS AL TOCAR EL TEXTO
+    document.getElementById("aliasValue")
+        .addEventListener("click", async () => {
+
+        const copied = await copyAlias();
+
+        const message = document.getElementById("paymentMessage");
+
+        if (copied) {
+            message.textContent = "¡Alias copiado correctamente!";
+            message.className = "message visible success";
+        } else {
+            message.textContent = "No se pudo copiar. Seleccioná el alias manualmente.";
+            message.className = "message visible error";
+        }
+    });
+
     // BOTÓN CONTINUAR: INTENTAR COPIAR Y AVANZAR
     document.getElementById("continueButton")
       .addEventListener("click", async () => {
