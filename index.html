@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#211a16">
+  <title>Pagar mi alfajor</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --fondo: #211a16;
+      --panel: #30251e;
+      --texto: #fff8ef;
+      --suave: #d1bfae;
+      --acento: #d7a36a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--fondo);
+      color: var(--texto);
+      font-family: system-ui, sans-serif;
+    }
+
+    main {
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .marca {
+      color: var(--acento);
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    h1 { font-size: 30px; margin-bottom: 8px; }
+
+    p {
+      color: var(--suave);
+      line-height: 1.55;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid #514033;
+      border-radius: 20px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+
+    .alias {
+      overflow-wrap: anywhere;
+      color: var(--acento);
+      font-size: 22px;
+      font-weight: 700;
+      margin: 14px 0;
+    }
+
+    button, .billetera {
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 12px;
+      font-size: 16px;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .principal {
+      background: var(--acento);
+      color: #211a16;
+    }
+
+    .secundario, .billetera {
+      background: #403228;
+      color: var(--texto);
+      border: 1px solid #64503f;
+    }
+
+    #estado {
+      min-height: 48px;
+      font-size: 14px;
+      margin-top: 18px;
+    }
+
+    #alternativas { margin-top: 22px; }
+
+    .nota { font-size: 12px; }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+
+<body>
+<main>
+  <div class="marca">Alfajores artesanales</div>
+  <h1>¡Gracias por tu compra!</h1>
+  <p>Estamos preparando el pago para que puedas transferir fácilmente.</p>
+
+  <section class="panel">
+    <p>Tu alias de transferencia</p>
+    <div class="alias" id="alias"></div>
+
+    <button class="principal" id="copiar">
+      Copiar alias
+    </button>
+
+    <div id="estado" role="status" aria-live="polite">
+      Preparando el pago…
+    </div>
+
+    <button class="secundario" id="siguiente" hidden>
+      Probar siguiente billetera
+    </button>
+
+    <div id="alternativas" hidden>
+      <p>Si la aplicación no se abrió, elegí tu billetera:</p>
+      <div id="listaBilleteras"></div>
+    </div>
+  </section>
+
+  <p class="nota">
+    Recordá verificar el destinatario y el importe antes de transferir.
+    La compra queda pagada cuando se acredita la transferencia.
+  </p>
+</main>
+
+<script>
+(() => {
+  // CAMBIAR POR TU ALIAS REAL
+  const ALIAS = "REEMPLAZAR.CON.TU.ALIAS";
+
+  // Orden de preferencia.
+  // Los esquemas son los proporcionados y deben probarse
+  // con las versiones instaladas de cada aplicación.
+  const billeteras = [
+    {
+      nombre: "Mercado Pago",
+      ios: "mercadopago://",
+      android: "com.mercadopago.wallet",
+      esquema: "mercadopago",
+      web: "https://www.mercadopago.com.ar/"
+    },
+    {
+      nombre: "Santander",
+      ios: "santanderrio://",
+      android: "ar.com.santander.rio.mbanking",
+      esquema: "santanderrio",
+      web: "https://www.santander.com.ar/"
+    },
+    {
+      nombre: "Galicia",
+      ios: "galicia://",
+      android: "ar.com.galicia.android",
+      esquema: "galicia",
+      web: "https://www.galicia.ar/"
+    },
+    {
+      nombre: "Naranja X",
+      ios: "naranjax://",
+      android: "com.naranjax",
+      esquema: "naranjax",
+      web: "https://www.naranjax.com/"
+    }
+  ];
+
+  const $ = id => document.getElementById(id);
+
+  let indice = 0;
+  let intentoEnCurso = false;
+  let paginaOcultaDuranteIntento = false;
+  let temporizador = null;
+  let detenido = false;
+
+  const esIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+    || (navigator.platform === "MacIntel"
+        && navigator.maxTouchPoints > 1);
+
+  const esAndroid = /Android/i.test(navigator.userAgent);
+
+  $("alias").textContent = ALIAS;
+
+  async function copiarAlias() {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(ALIAS);
+        $("estado").textContent =
+          "Alias copiado. Ahora intentaremos abrir la billetera.";
+        return true;
+      }
+
+      throw new Error("Portapapeles no disponible");
+    } catch {
+      $("estado").textContent =
+        "El navegador no permitió copiar automáticamente. " +
+        "Usá el botón «Copiar alias».";
+      return false;
+    }
+  }
+
+  function urlApertura(billetera) {
+    if (esAndroid) {
+      // Intenta abrir la aplicación por paquete.
+      // No garantiza que acepte el esquema ni una pantalla específica.
+      return "intent://#Intent;" +
+        "scheme=" + billetera.esquema + ";" +
+        "package=" + billetera.android + ";" +
+        "end";
+    }
+
+    if (esIOS) {
+      return billetera.ios;
+    }
+
+    return null;
+  }
+
+  function detenerIntentos(mensaje) {
+    detenido = true;
+    intentoEnCurso = false;
+    clearTimeout(temporizador);
+    $("siguiente").hidden = true;
+    $("alternativas").hidden = false;
+
+    if (mensaje) $("estado").textContent = mensaje;
+  }
+
+  function intentarApertura() {
+    if (detenido || intentoEnCurso) return;
+
+    if (!esIOS && !esAndroid) {
+      detenerIntentos(
+        "Elegí una billetera compatible con tu dispositivo."
+      );
+      return;
+    }
+
+    if (indice >= billeteras.length) {
+      detenerIntentos(
+        "No pudimos confirmar la apertura de una billetera. " +
+        "Elegí una opción manualmente."
+      );
+      return;
+    }
+
+    const billetera = billeteras[indice];
+    const url = urlApertura(billetera);
+
+    intentoEnCurso = true;
+    paginaOcultaDuranteIntento = false;
+
+    $("estado").textContent =
+      "Intentando abrir " + billetera.nombre + "…";
+
+    // Si el sistema cambia a otra aplicación, detenemos la cadena.
+    // Esto es una señal aproximada, no una confirmación.
+    function cambioVisibilidad() {
+      if (document.hidden) {
+        paginaOcultaDuranteIntento = true;
+      } else if (paginaOcultaDuranteIntento) {
+        document.removeEventListener(
+          "visibilitychange", cambioVisibilidad
+        );
+
+        detenerIntentos(
+          "Volviste al navegador. Si todavía necesitás pagar, " +
+          "elegí una billetera."
+        );
+      }
+    }
+
+    document.addEventListener(
+      "visibilitychange", cambioVisibilidad
+    );
+
+    // El navegador puede bloquear esta navegación automática.
+    window.location.href = url;
+
+    temporizador = setTimeout(() => {
+      document.removeEventListener(
+        "visibilitychange", cambioVisibilidad
+      );
+
+      if (detenido) return;
+
+      intentoEnCurso = false;
+
+      if (paginaOcultaDuranteIntento) {
+        detenerIntentos(
+          "Parece que se abrió otra aplicación. " +
+          "Si no fue así, elegí una billetera."
+        );
+        return;
+      }
+
+      indice++;
+
+      if (indice < billeteras.length) {
+        $("estado").textContent =
+          "No pudimos confirmar la apertura de " +
+          billetera.nombre + ". Probando otra opción…";
+
+        // Los navegadores pueden bloquear intentos automáticos
+        // sucesivos; por eso mantenemos también opciones manuales.
+        intentarApertura();
+      } else {
+        detenerIntentos(
+          "No pudimos confirmar la apertura. Elegí una billetera."
+        );
+      }
+    }, 1800);
+  }
+
+  function crearAlternativas() {
+    const lista = $("listaBilleteras");
+
+    billeteras.forEach(billetera => {
+      const enlace = document.createElement("a");
+      enlace.className = "billetera";
+      enlace.textContent = "Abrir " + billetera.nombre;
+      enlace.href = urlApertura(billetera) || billetera.web;
+
+      // Cada enlace requiere un toque del usuario.
+      enlace.addEventListener("click", () => {
+        copiarAlias();
+      });
+
+      lista.appendChild(enlace);
+    });
+  }
+
+  $("copiar").addEventListener("click", async () => {
+    const copiado = await copiarAlias();
+
+    if (!copiado) {
+      // Copia alternativa para navegadores antiguos.
+      const campo = document.createElement("textarea");
+      campo.value = ALIAS;
+      campo.setAttribute("readonly", "");
+      campo.style.position = "fixed";
+      campo.style.opacity = "0";
+      document.body.appendChild(campo);
+      campo.select();
+
+      let correcto = false;
+      try {
+        correcto = document.execCommand("copy");
+      } catch {}
+
+      campo.remove();
+
+      $("estado").textContent = correcto
+        ? "Alias copiado."
+        : "No se pudo copiar. Seleccioná el alias y copialo manualmente.";
+    }
+  });
+
+  $("siguiente").addEventListener("click", () => {
+    if (detenido) {
+      detenido = false;
+      intentoEnCurso = false;
+    }
+
+    intentarApertura();
+  });
+
+  crearAlternativas();
+
+  // Al ingresar: intentar copiar y abrir la primera billetera.
+  // Los navegadores pueden exigir una interacción del usuario.
+  copiarAlias();
+
+  if (esIOS || esAndroid) {
+    intentarApertura();
+  } else {
+    detenerIntentos(
+      "Abrí esta página desde un teléfono para probar las billeteras."
+    );
+  }
+
+  // Siempre dejamos disponible una salida manual.
+  $("alternativas").hidden = false;
+})();
+</script>
+</body>
+</html>
