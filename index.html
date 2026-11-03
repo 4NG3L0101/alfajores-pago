@@ -496,15 +496,15 @@
             },
             {
                 name: "Galicia",
-                scheme: "galicia://",
-                androidPackage: "ar.com.galicia.android",
-                website: "https://www.galicia.ar/"
+                website: "https://www.galicia.ar/",
+                deepLink: "https://hacetegalicia.onelink.me/64zW/zavsf942"
             },
             {
                 name: "Naranja X",
-                scheme: "naranjax://",
+                scheme: "nx://home",
                 androidPackage: "com.naranjax",
-                website: "https://www.naranjax.com/"
+                website: "https://naranjax.com/",
+                deepLink: "https://naranjax.sng.link/Ektok/11b2?_dl=nx%3A%2F%2Fhome&_smtype=3&pcn=home&pcrn=Sticky"
             }
         ];
 
@@ -726,7 +726,13 @@
                 link.className = "wallet-button";
                 link.textContent = wallet.name;
 
-                if (isAndroid) {
+                // Naranja X: utiliza el enlace oficial de Singular.
+                if (wallet.deepLink) {
+                    link.href = wallet.deepLink;
+                }
+
+                // Android: intenta abrir la aplicación instalada.
+                else if (isAndroid) {
                     link.href =
                         "intent://#Intent;" +
                         "scheme=" + wallet.scheme.replace("://", "") + ";" +
@@ -736,10 +742,12 @@
                         ";end";
                 }
 
+                // iPhone / iPad.
                 else if (isIOS) {
                     link.href = wallet.scheme;
                 }
 
+                // Computadoras y otros dispositivos.
                 else {
                     link.href = wallet.website;
                     link.target = "_blank";
