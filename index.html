@@ -2,398 +2,754 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#211a16">
-  <title>Pagar mi alfajor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#713600">
+    <title>AGA | Alfajores artesanales | Compra online</title>
 
-  <style>
-    :root {
-      color-scheme: dark;
-      --fondo: #211a16;
-      --panel: #30251e;
-      --texto: #fff8ef;
-      --suave: #d1bfae;
-      --acento: #d7a36a;
-    }
+    <style>
+        :root {
+            --background: #211914;
+            --surface: #30251f;
+            --surface-hover: #3d3027;
+            --border: #594534;
+            --gold: #dda66e;
+            --gold-light: #efbd83;
+            --text: #fffaf4;
+            --muted: #c9b9a9;
+            --green: #70bd88;
+        }
 
-    * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background: var(--fondo);
-      color: var(--texto);
-      font-family: system-ui, sans-serif;
-    }
+        body {
+            margin: 0;
+            padding: 35px 15px 50px;
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
 
-    main {
-      width: 100%;
-      max-width: 420px;
-      text-align: center;
-    }
+        .container {
+            width: 100%;
+            max-width: 720px;
+            margin: auto;
+        }
 
-    .marca {
-      color: var(--acento);
-      font-size: 12px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-    }
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
 
-    h1 { font-size: 30px; margin-bottom: 8px; }
+        .brand-image {
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            display: block;
+            margin: 0 auto 18px;
+        }
 
-    p {
-      color: var(--suave);
-      line-height: 1.55;
-    }
+        h1 {
+            font-size: 28px;
+            color: var(--text);
+            margin: 0;
+        }
 
-    .panel {
-      background: var(--panel);
-      border: 1px solid #514033;
-      border-radius: 20px;
-      padding: 24px;
-      margin-top: 24px;
-    }
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            margin-top: 10px;
+        }
 
-    .alias {
-      overflow-wrap: anywhere;
-      color: var(--acento);
-      font-size: 22px;
-      font-weight: 700;
-      margin: 14px 0;
-    }
+        h2 {
+            font-size: 19px;
+            color: var(--gold-light);
+            margin: 28px 0 16px;
+        }
 
-    button, .billetera {
-      display: block;
-      width: 100%;
-      border: 0;
-      border-radius: 12px;
-      padding: 15px;
-      margin-top: 12px;
-      font-size: 16px;
-      font-weight: 650;
-      text-decoration: none;
-      cursor: pointer;
-    }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
 
-    .principal {
-      background: var(--acento);
-      color: #211a16;
-    }
+        .product {
+            position: relative;
+            display: block;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--surface);
+            cursor: pointer;
+            transition: .2s;
+        }
 
-    .secundario, .billetera {
-      background: #403228;
-      color: var(--texto);
-      border: 1px solid #64503f;
-    }
+            .product:hover {
+                background: var(--surface-hover);
+                border-color: var(--gold);
+            }
 
-    #estado {
-      min-height: 48px;
-      font-size: 14px;
-      margin-top: 18px;
-    }
+            .product:has(input:checked) {
+                border: 2px solid var(--gold);
+                background: #3a2b20;
+                box-shadow: 0 0 0 2px #dda66e20;
+            }
 
-    #alternativas { margin-top: 22px; }
+            .product input {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                width: 21px;
+                height: 21px;
+                accent-color: var(--gold);
+                cursor: pointer;
+            }
 
-    .nota { font-size: 12px; }
+            .product img {
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                object-fit: cover;
+                border-radius: 10px;
+                background: #241c17;
+            }
 
-    [hidden] { display: none !important; }
-  </style>
+        .product-name {
+            display: block;
+            font-weight: bold;
+            margin-top: 12px;
+            font-size: 15px;
+            color: var(--text);
+        }
+
+        .product-price {
+            display: block;
+            color: var(--gold);
+            font-size: 19px;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+
+        .product-description {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .custom-quantity {
+            display: none;
+            margin-top: 14px;
+            padding: 17px;
+            border-radius: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+            .custom-quantity.visible {
+                display: block;
+            }
+
+        label.input-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--gold-light);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            font-size: 17px;
+            background: #211914;
+            color: var(--text);
+            outline: none;
+        }
+
+            input[type="number"]:focus {
+                border-color: var(--gold);
+            }
+
+        .summary {
+            margin-top: 20px;
+            padding: 19px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 13px;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+            .summary-line strong {
+                color: var(--text);
+            }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+            margin-top: 13px;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .total-price {
+            color: var(--gold);
+            font-size: 26px;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+            button:disabled {
+                opacity: .4;
+                cursor: not-allowed;
+            }
+
+        .primary-button {
+            background: var(--gold);
+            color: #211914;
+            margin-top: 17px;
+        }
+
+            .primary-button:not(:disabled):hover {
+                background: var(--gold-light);
+            }
+
+        .payment-section {
+            display: none;
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+            .payment-section.visible {
+                display: block;
+            }
+
+        .alias-box {
+            padding: 20px;
+            border-radius: 15px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .alias-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--gold);
+            overflow-wrap: anywhere;
+            margin: 13px 0;
+        }
+
+        .payment-total {
+            font-size: 27px;
+            color: var(--gold);
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .wallet-button {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 11px;
+            margin-top: 11px;
+            font-weight: bold;
+            transition: .2s;
+        }
+
+            .wallet-button:hover {
+                background: #49382b;
+                border-color: var(--gold);
+            }
+
+        .note {
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--muted);
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 25px 13px 35px;
+            }
+
+            .brand-image {
+                width: 110px;
+                height: 110px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .products {
+                gap: 10px;
+            }
+
+            .product {
+                padding: 9px;
+            }
+
+            .product-name {
+                font-size: 14px;
+            }
+
+            .product-price {
+                font-size: 17px;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
-<main>
-  <div class="marca">Alfajores artesanales</div>
-  <h1>¡Gracias por tu compra!</h1>
-  <p>Estamos preparando el pago para que puedas transferir fácilmente.</p>
+    <main class="container">
 
-  <section class="panel">
-    <p>Tu alias de transferencia</p>
-    <div class="alias" id="alias"></div>
+        <header>
+            <!-- Reemplazar por la imagen cuadrada de tu marca -->
+            <img class="brand-image"
+                 src="img/marca.png"
+                 alt="Marca">
 
-    <button class="principal" id="copiar">
-      Copiar alias
-    </button>
+            <h1>Alfajores artesanales</h1>
+            <p class="subtitle">Elegí tu compra y disfrutá algo diferente.</p>
+        </header>
 
-    <div id="estado" role="status" aria-live="polite">
-      Preparando el pago…
-    </div>
+        <section>
+            <h2>¿Qué cantidad querés comprar?</h2>
 
-    <button class="secundario" id="siguiente" hidden>
-      Probar siguiente billetera
-    </button>
+            <div class="products">
 
-    <div id="alternativas" hidden>
-      <p>Si la aplicación no se abrió, elegí tu billetera:</p>
-      <div id="listaBilleteras"></div>
-    </div>
-  </section>
+                <label class="product">
+                    <input type="radio" name="purchase" value="single">
+                    <img src="img/unidad.png" alt="Un alfajor">
+                    <span class="product-name">1 unidad</span>
+                    <span class="product-price">$3.000</span>
+                    <span class="product-description">Precio individual</span>
+                </label>
 
-  <p class="nota">
-    Recordá verificar el destinatario y el importe antes de transferir.
-    La compra queda pagada cuando se acredita la transferencia.
-  </p>
-</main>
+                <label class="product">
+                    <input type="radio" name="purchase" value="pack6">
+                    <img src="img/pack6.png" alt="Pack de 6 alfajores">
+                    <span class="product-name">Pack x 6</span>
+                    <span class="product-price">$16.500</span>
+                    <span class="product-description">Presentación de 6 unidades</span>
+                </label>
 
-<script>
-(() => {
-  // CAMBIAR POR TU ALIAS REAL
-  const ALIAS = "REEMPLAZAR.CON.TU.ALIAS";
+                <label class="product">
+                    <input type="radio" name="purchase" value="pack12">
+                    <img src="img/pack12.png" alt="Pack de 12 alfajores">
+                    <span class="product-name">Pack x 12</span>
+                    <span class="product-price">$32.500</span>
+                    <span class="product-description">Presentación de 12 unidades</span>
+                </label>
 
-  // Orden de preferencia.
-  // Los esquemas son los proporcionados y deben probarse
-  // con las versiones instaladas de cada aplicación.
-  const billeteras = [
-    {
-      nombre: "Mercado Pago",
-      ios: "mercadopago://",
-      android: "com.mercadopago.wallet",
-      esquema: "mercadopago",
-      web: "https://www.mercadopago.com.ar/"
-    },
-    {
-      nombre: "Santander",
-      ios: "santanderrio://",
-      android: "ar.com.santander.rio.mbanking",
-      esquema: "santanderrio",
-      web: "https://www.santander.com.ar/"
-    },
-    {
-      nombre: "Galicia",
-      ios: "galicia://",
-      android: "ar.com.galicia.android",
-      esquema: "galicia",
-      web: "https://www.galicia.ar/"
-    },
-    {
-      nombre: "Naranja X",
-      ios: "naranjax://",
-      android: "com.naranjax",
-      esquema: "naranjax",
-      web: "https://www.naranjax.com/"
-    }
-  ];
+                <label class="product">
+                    <input type="radio" name="purchase" value="custom">
+                    <img src="img/otra-cantidad.png" alt="Alfajores artesanales">
+                    <span class="product-name">Otra cantidad</span>
+                    <span class="product-price">Precio variable</span>
+                    <span class="product-description">Elegí cuántos necesitás</span>
+                </label>
 
-  const $ = id => document.getElementById(id);
+            </div>
 
-  let indice = 0;
-  let intentoEnCurso = false;
-  let paginaOcultaDuranteIntento = false;
-  let temporizador = null;
-  let detenido = false;
+            <div id="customQuantity" class="custom-quantity">
+                <label class="input-label" for="quantity">
+                    ¿Cuántos alfajores querés?
+                </label>
+                <input type="number"
+                       id="quantity"
+                       min="2"
+                       max="999"
+                       step="1"
+                       placeholder="Ingresá la cantidad"
+                       inputmode="numeric">
+                <p class="note">
+                    De 2 a 12 unidades: $2.800 c/u.
+                    Desde 13 unidades: $2.600 c/u.
+                </p>
+            </div>
 
-  const esIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
-    || (navigator.platform === "MacIntel"
-        && navigator.maxTouchPoints > 1);
+            <div class="summary">
+                <div class="summary-line">
+                    <span>Cantidad</span>
+                    <strong id="summaryQuantity">Sin seleccionar</strong>
+                </div>
 
-  const esAndroid = /Android/i.test(navigator.userAgent);
+                <div class="summary-line">
+                    <span>Precio por unidad</span>
+                    <strong id="unitPrice">—</strong>
+                </div>
 
-  $("alias").textContent = ALIAS;
+                <div class="total">
+                    <span>Total a pagar</span>
+                    <span class="total-price" id="totalPrice">$0</span>
+                </div>
+            </div>
 
-  async function copiarAlias() {
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(ALIAS);
-        $("estado").textContent =
-          "Alias copiado. Ahora intentaremos abrir la billetera.";
-        return true;
-      }
+            <button id="continueButton"
+                    class="primary-button"
+                    disabled>
+                Proseguir compra
+            </button>
+        </section>
 
-      throw new Error("Portapapeles no disponible");
-    } catch {
-      $("estado").textContent =
-        "El navegador no permitió copiar automáticamente. " +
-        "Usá el botón «Copiar alias».";
-      return false;
-    }
-  }
+        <!-- Se muestra después de confirmar y autorizar la copia -->
+        <section id="paymentSection" class="payment-section">
 
-  function urlApertura(billetera) {
-    if (esAndroid) {
-      // Intenta abrir la aplicación por paquete.
-      // No garantiza que acepte el esquema ni una pantalla específica.
-      return "intent://#Intent;" +
-        "scheme=" + billetera.esquema + ";" +
-        "package=" + billetera.android + ";" +
-        "end";
-    }
+            <h2>Finalizar compra</h2>
 
-    if (esIOS) {
-      return billetera.ios;
-    }
+            <div class="alias-box">
+                <strong>Alias para realizar la transferencia</strong>
+                <div class="alias-value" id="aliasText">TU.ALIAS.AQUI</div>
 
-    return null;
-  }
+                <p class="note">
+                    Al continuar, autorizás a copiar el alias al portapapeles.
+                    Luego podrás elegir tu billetera o banco.
+                </p>
 
-  function detenerIntentos(mensaje) {
-    detenido = true;
-    intentoEnCurso = false;
-    clearTimeout(temporizador);
-    $("siguiente").hidden = true;
-    $("alternativas").hidden = false;
+                <button id="copyAliasButton" class="primary-button">
+                    Autorizar y copiar alias
+                </button>
+            </div>
 
-    if (mensaje) $("estado").textContent = mensaje;
-  }
+            <div id="wallets" class="hidden">
+                <h2>Elegí dónde realizar el pago</h2>
 
-  function intentarApertura() {
-    if (detenido || intentoEnCurso) return;
+                <div class="summary">
+                    <div class="summary-line">
+                        <span>Importe de tu compra</span>
+                    </div>
+                    <div class="payment-total" id="paymentTotal">$0</div>
+                </div>
 
-    if (!esIOS && !esAndroid) {
-      detenerIntentos(
-        "Elegí una billetera compatible con tu dispositivo."
-      );
-      return;
-    }
+                <div id="walletLinks"></div>
 
-    if (indice >= billeteras.length) {
-      detenerIntentos(
-        "No pudimos confirmar la apertura de una billetera. " +
-        "Elegí una opción manualmente."
-      );
-      return;
-    }
+                <p class="note">
+                    Se abrirá la aplicación o el sitio de la entidad seleccionada.
+                    Verificá el alias y el importe antes de confirmar la transferencia.
+                    La transferencia no se confirma automáticamente desde esta página.
+                </p>
+            </div>
+        </section>
 
-    const billetera = billeteras[indice];
-    const url = urlApertura(billetera);
+    </main>
 
-    intentoEnCurso = true;
-    paginaOcultaDuranteIntento = false;
+    <script>
+        // =====================================
+        // CONFIGURACIÓN
+        // =====================================
 
-    $("estado").textContent =
-      "Intentando abrir " + billetera.nombre + "…";
+        const ALIAS = "a.g.aguirre";
 
-    // Si el sistema cambia a otra aplicación, detenemos la cadena.
-    // Esto es una señal aproximada, no una confirmación.
-    function cambioVisibilidad() {
-      if (document.hidden) {
-        paginaOcultaDuranteIntento = true;
-      } else if (paginaOcultaDuranteIntento) {
-        document.removeEventListener(
-          "visibilitychange", cambioVisibilidad
+        // Enlaces y esquemas suministrados para probar.
+        // Deben verificarse en dispositivos reales.
+        const wallets = [
+            {
+                name: "Mercado Pago",
+                scheme: "mercadopago://",
+                androidPackage: "com.mercadopago.wallet",
+                website: "https://www.mercadopago.com.ar/"
+            },
+            {
+                name: "Santander",
+                scheme: "santanderrio://",
+                androidPackage: "ar.com.santander.rio.mbanking",
+                website: "https://www.santander.com.ar/"
+            },
+            {
+                name: "Galicia",
+                scheme: "galicia://",
+                androidPackage: "ar.com.galicia.android",
+                website: "https://www.galicia.ar/"
+            },
+            {
+                name: "Naranja X",
+                scheme: "naranjax://",
+                androidPackage: "com.naranjax",
+                website: "https://www.naranjax.com/"
+            }
+        ];
+
+        // =====================================
+        // ELEMENTOS
+        // =====================================
+
+        const options = document.querySelectorAll(
+            'input[name="purchase"]'
         );
 
-        detenerIntentos(
-          "Volviste al navegador. Si todavía necesitás pagar, " +
-          "elegí una billetera."
-        );
-      }
-    }
+        const quantityInput = document.getElementById("quantity");
+        const customQuantity = document.getElementById("customQuantity");
 
-    document.addEventListener(
-      "visibilitychange", cambioVisibilidad
-    );
+        const summaryQuantity = document.getElementById("summaryQuantity");
+        const unitPrice = document.getElementById("unitPrice");
+        const totalPrice = document.getElementById("totalPrice");
 
-    // El navegador puede bloquear esta navegación automática.
-    window.location.href = url;
+        const continueButton = document.getElementById("continueButton");
+        const paymentSection = document.getElementById("paymentSection");
+        const copyAliasButton = document.getElementById("copyAliasButton");
 
-    temporizador = setTimeout(() => {
-      document.removeEventListener(
-        "visibilitychange", cambioVisibilidad
-      );
+        const aliasText = document.getElementById("aliasText");
+        const walletsContainer = document.getElementById("wallets");
+        const paymentTotal = document.getElementById("paymentTotal");
+        const walletLinks = document.getElementById("walletLinks");
 
-      if (detenido) return;
+        // =====================================
+        // ESTADO DE LA COMPRA
+        // =====================================
 
-      intentoEnCurso = false;
+        let selectedQuantity = 0;
+        let selectedUnitPrice = 0;
+        let finalTotal = 0;
 
-      if (paginaOcultaDuranteIntento) {
-        detenerIntentos(
-          "Parece que se abrió otra aplicación. " +
-          "Si no fue así, elegí una billetera."
-        );
-        return;
-      }
+        const money = value =>
+            new Intl.NumberFormat("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                maximumFractionDigits: 0
+            }).format(value);
 
-      indice++;
+        function getSelectedOption() {
+            return document.querySelector(
+                'input[name="purchase"]:checked'
+            )?.value;
+        }
 
-      if (indice < billeteras.length) {
-        $("estado").textContent =
-          "No pudimos confirmar la apertura de " +
-          billetera.nombre + ". Probando otra opción…";
+        function calculatePurchase() {
+            const option = getSelectedOption();
 
-        // Los navegadores pueden bloquear intentos automáticos
-        // sucesivos; por eso mantenemos también opciones manuales.
-        intentarApertura();
-      } else {
-        detenerIntentos(
-          "No pudimos confirmar la apertura. Elegí una billetera."
-        );
-      }
-    }, 1800);
-  }
+            selectedQuantity = 0;
+            selectedUnitPrice = 0;
+            finalTotal = 0;
 
-  function crearAlternativas() {
-    const lista = $("listaBilleteras");
+            customQuantity.classList.toggle(
+                "visible",
+                option === "custom"
+            );
 
-    billeteras.forEach(billetera => {
-      const enlace = document.createElement("a");
-      enlace.className = "billetera";
-      enlace.textContent = "Abrir " + billetera.nombre;
-      enlace.href = urlApertura(billetera) || billetera.web;
+            if (option === "single") {
+                selectedQuantity = 1;
+                selectedUnitPrice = 3000;
+            }
 
-      // Cada enlace requiere un toque del usuario.
-      enlace.addEventListener("click", () => {
-        copiarAlias();
-      });
+            else if (option === "pack6") {
+                selectedQuantity = 6;
+                selectedUnitPrice = 16500 / 6;
+            }
 
-      lista.appendChild(enlace);
-    });
-  }
+            else if (option === "pack12") {
+                selectedQuantity = 12;
+                selectedUnitPrice = 32500 / 12;
+            }
 
-  $("copiar").addEventListener("click", async () => {
-    const copiado = await copiarAlias();
+            else if (option === "custom") {
+                const quantity = Number(quantityInput.value);
 
-    if (!copiado) {
-      // Copia alternativa para navegadores antiguos.
-      const campo = document.createElement("textarea");
-      campo.value = ALIAS;
-      campo.setAttribute("readonly", "");
-      campo.style.position = "fixed";
-      campo.style.opacity = "0";
-      document.body.appendChild(campo);
-      campo.select();
+                if (
+                    !Number.isInteger(quantity) ||
+                    quantity < 2 ||
+                    quantity > 999
+                ) {
+                    updateSummary(false);
+                    return;
+                }
 
-      let correcto = false;
-      try {
-        correcto = document.execCommand("copy");
-      } catch {}
+                selectedQuantity = quantity;
 
-      campo.remove();
+                selectedUnitPrice =
+                    quantity >= 13 ? 2600 : 2800;
+            }
 
-      $("estado").textContent = correcto
-        ? "Alias copiado."
-        : "No se pudo copiar. Seleccioná el alias y copialo manualmente.";
-    }
-  });
+            else {
+                updateSummary(false);
+                return;
+            }
 
-  $("siguiente").addEventListener("click", () => {
-    if (detenido) {
-      detenido = false;
-      intentoEnCurso = false;
-    }
+            finalTotal = Math.round(
+                selectedQuantity * selectedUnitPrice
+            );
 
-    intentarApertura();
-  });
+            // Los packs tienen precios cerrados.
+            if (option === "pack6") finalTotal = 16500;
+            if (option === "pack12") finalTotal = 32500;
 
-  crearAlternativas();
+            updateSummary(true);
+        }
 
-  // Al ingresar: intentar copiar y abrir la primera billetera.
-  // Los navegadores pueden exigir una interacción del usuario.
-  copiarAlias();
+        function updateSummary(valid) {
+            if (!valid) {
+                summaryQuantity.textContent = "Sin seleccionar";
+                unitPrice.textContent = "—";
+                totalPrice.textContent = "$0";
+                continueButton.disabled = true;
+                return;
+            }
 
-  if (esIOS || esAndroid) {
-    intentarApertura();
-  } else {
-    detenerIntentos(
-      "Abrí esta página desde un teléfono para probar las billeteras."
-    );
-  }
+            summaryQuantity.textContent =
+                selectedQuantity + " alfajor(es)";
 
-  // Siempre dejamos disponible una salida manual.
-  $("alternativas").hidden = false;
-})();
-</script>
+            unitPrice.textContent =
+                money(selectedUnitPrice);
+
+            totalPrice.textContent =
+                money(finalTotal);
+
+            continueButton.disabled = false;
+
+            // Si cambia la compra, se vuelve a exigir autorización.
+            paymentSection.classList.remove("visible");
+            walletsContainer.classList.add("hidden");
+            copyAliasButton.disabled = false;
+            copyAliasButton.textContent =
+                "Autorizar y copiar alias";
+        }
+
+        // =====================================
+        // EVENTOS DE SELECCIÓN
+        // =====================================
+
+        options.forEach(option => {
+            option.addEventListener("change", calculatePurchase);
+        });
+
+        quantityInput.addEventListener("input", calculatePurchase);
+
+        // =====================================
+        // PROSEGUIR COMPRA
+        // =====================================
+
+        continueButton.addEventListener("click", () => {
+            calculatePurchase();
+
+            if (!selectedQuantity || !finalTotal) return;
+
+            aliasText.textContent = ALIAS;
+            paymentTotal.textContent = money(finalTotal);
+
+            paymentSection.classList.add("visible");
+            walletsContainer.classList.add("hidden");
+            copyAliasButton.disabled = false;
+            copyAliasButton.textContent =
+                "Autorizar y copiar alias";
+
+            paymentSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        });
+
+        // =====================================
+        // COPIAR ALIAS CON AUTORIZACIÓN
+        // =====================================
+
+        copyAliasButton.addEventListener("click", async () => {
+            if (ALIAS === "TU.ALIAS.AQUI") {
+                alert("Primero configurá tu alias en el código.");
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(ALIAS);
+
+                copyAliasButton.textContent = "¡Alias copiado!";
+                walletsContainer.classList.remove("hidden");
+
+                createWalletButtons();
+
+            } catch (error) {
+                // Si el navegador no permite copiar, no se afirma
+                // que el alias fue copiado.
+                copyAliasButton.textContent =
+                    "No se pudo copiar. Intentar nuevamente";
+
+                alert(
+                    "El navegador no permitió copiar el alias. " +
+                    "Verificá que estés usando HTTPS y volvé a intentarlo."
+                );
+            }
+        });
+
+        // =====================================
+        // BOTONES DE PAGO
+        // =====================================
+
+        function createWalletButtons() {
+            walletLinks.innerHTML = "";
+
+            const isAndroid =
+                /Android/i.test(navigator.userAgent);
+
+            const isIOS =
+                /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+            wallets.forEach(wallet => {
+                const link = document.createElement("a");
+
+                link.className = "wallet-button";
+                link.textContent = wallet.name;
+
+                if (isAndroid) {
+                    link.href =
+                        "intent://#Intent;" +
+                        "scheme=" + wallet.scheme.replace("://", "") + ";" +
+                        "package=" + wallet.androidPackage + ";" +
+                        "S.browser_fallback_url=" +
+                        encodeURIComponent(wallet.website) +
+                        ";end";
+                }
+
+                else if (isIOS) {
+                    link.href = wallet.scheme;
+                }
+
+                else {
+                    link.href = wallet.website;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                }
+
+                walletLinks.appendChild(link);
+            });
+        }
+
+    </script>
 </body>
 </html>
